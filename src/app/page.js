@@ -16,6 +16,7 @@ export default function Home() {
   const [name, setName] = useState('Dylan');
 
   useEffect(() => {
+    // hitting an api and setting our component with some data
     fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/`)
       .then((res) => res.json())
       .then((data) => {
