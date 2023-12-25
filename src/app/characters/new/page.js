@@ -1,9 +1,9 @@
 "use client"
 import { useEffect, useState } from "react";
-import SignUp from "@/app/components/SignUp";
+import CreateCharacter from "@/app/components/CreateCharacter";
 
-export default function CreateCharacter() {
+export default function NewCharacter() {
     return (
-      <SignUp />
+      <CreateCharacter />
     )
   }
