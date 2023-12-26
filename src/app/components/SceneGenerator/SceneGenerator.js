@@ -1,5 +1,4 @@
 "use client";
-import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -10,17 +9,35 @@ import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@mui/material/styles';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-export default function SceneGenerator({ character }) {
+export default function SceneGenerator() {
+  const { characterId } = useParams();
   const theme = useTheme();
   const router = useRouter();
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [character, setCharacters] = useState([]);
+
+  useEffect(() => {
+    const fetchCharacter = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/characters/${characterId}`);
+        console.log('DEBUGGING', response);
+        setCharacters(response.data);
+      } catch (error) {
+        console.log("An error ocurred:", error);
+      }
+    };
+
+    fetchCharacter();
+  }, [characterId]);
 
   const handleCreateScene = async () => {
     setIsLoading(true);
     try {
-      const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/scenes/new/658b15f63a0351d6127d7ed6`;
+      const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/scenes/new/${characterId}`;
 
       const response = await axios.post(url, { prompt });
 
@@ -54,7 +71,7 @@ export default function SceneGenerator({ character }) {
               },
             }}
           >
-            An exciting adventure awaits "Character"!
+            An exciting adventure awaits {character.name}!
           </Typography>
           <Typography variant="h5" component="h2" gutterBottom align="center"
             sx={{
