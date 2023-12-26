@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
@@ -48,7 +49,7 @@ export default function SceneGenerator({ character }) {
         >
           <Typography variant="h2" component="h1" gutterBottom align="center"
             sx={{
-              [theme.breakpoints.down('sm')]: { 
+              [theme.breakpoints.down('sm')]: {
                 fontSize: '1.75rem',
               },
             }}
