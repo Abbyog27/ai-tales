@@ -1,3 +1,4 @@
+"use client";
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -12,13 +13,17 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="/">
+        AI Tales
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -31,14 +36,48 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  const [redirect, setRedirect] = useState(false);
+
+  function validateEmail(email) {
+    const re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+    setError('');
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
     const data = new FormData(event.currentTarget);
-    console.log({
+    const newUser = {
+      username: data.get('username'),
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+    axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/new`, newUser)
+			.then(response => {
+				setRedirect(true);
+			})
+			.catch(error => {
+				if (error.response.data.message === 'Email already exists') {
+					console.log('===> Error in Signup', error.response.data.message);
+					setError(true);
+				}
+			});
   };
+
+  if (redirect) { router.push('/'); }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -60,25 +99,15 @@ export default function SignUp() {
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
-                  name="firstName"
+                  autoComplete="username"
+                  name="username"
                   required
                   fullWidth
-                  id="firstName"
-                  label="First Name"
+                  id="username"
+                  label="Username"
                   autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -89,6 +118,11 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  type="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  error={!!error}
+                  helperText={error}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -102,12 +136,6 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -117,10 +145,10 @@ export default function SignUp() {
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="center">
               <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
+                <Link href="/login" variant="body2">
+                  Already have an account? Sign in.
                 </Link>
               </Grid>
             </Grid>
