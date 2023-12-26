@@ -1,59 +1,37 @@
-import React, { useState } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import CharacterCard from '../CharacterCard/CharacterCard';
-
-const cards = [
-  {
-    key: 1,
-    name: "Character"
-  },
-  {
-    key: 2,
-    name: "Character"
-  },
-  {
-    key: 3,
-    name: "Character"
-  },
-  {
-    key: 4,
-    name: "Character"
-  },
-  {
-    key: 5,
-    name: "Character"
-  },
-  {
-    key: 6,
-    name: "Character"
-  },
-  {
-    key: 7,
-    name: "Character"
-  },
-  {
-    key: 8,
-    name: "Character"
-  },
-  {
-    key: 9,
-    name: "Character"
-  },
-];
 
 const ITEMS_PER_PAGE = 6;
 
 export default function CharacterGrid() {
+  const [characters, setCharacters] = useState([]);
   const [page, setPage] = useState(1);
-  const pageCount = Math.ceil(cards.length / ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    const fetchCharacters = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/characters/collection/507f1f77bcf86cd799439011`);
+        setCharacters(response.data);
+      } catch (error) {
+        console.error("An error occurred:", error);
+        // Handle the error appropriately
+      }
+    };
+
+    fetchCharacters();
+  }, []); // Empty dependency array means this effect runs once on component mount
+
+  const pageCount = Math.ceil(characters.length / ITEMS_PER_PAGE);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const paginatedCards = cards.slice(
+  const paginatedCharacters = characters.slice(
     (page - 1) * ITEMS_PER_PAGE,
     page * ITEMS_PER_PAGE
   );
@@ -61,9 +39,9 @@ export default function CharacterGrid() {
   return (
     <Container sx={{ py: 8 }} maxWidth="lg">
       <Grid container spacing={4}>
-        {paginatedCards.map((card) => (
-          <Grid item key={card.key} xs={12} sm={6} md={4}>
-            <CharacterCard character={card} />
+        {paginatedCharacters.map((character) => (
+          <Grid item key={character.key} xs={12} sm={6} md={4}>
+            <CharacterCard character={character} />
           </Grid>
         ))}
       </Grid>
