@@ -36,6 +36,11 @@ export default function EditCharacter() {
               label="Name"
               name="name"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -45,6 +50,11 @@ export default function EditCharacter() {
               label="Species"
               name="species"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -54,6 +64,11 @@ export default function EditCharacter() {
               label="Gender"
               name="gender"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -63,6 +78,11 @@ export default function EditCharacter() {
               label="Age"
               name="age"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -72,6 +92,11 @@ export default function EditCharacter() {
               label="Personality"
               name="personality"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -81,6 +106,11 @@ export default function EditCharacter() {
               label="Favorite Hobby"
               name="hobby"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             
             <Button
@@ -88,6 +118,7 @@ export default function EditCharacter() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              style={{ borderRadius: '25px' }}
             >
               Edit Character
             </Button>
@@ -98,6 +129,7 @@ export default function EditCharacter() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               color="error"
+              style={{ borderRadius: '25px' }}
             >
               Cancel
             </Button>

@@ -35,6 +35,12 @@ export default function ViewCharacter() {
               label="Name"
               name="name"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
+              
             />
             <TextField
               margin="normal"
@@ -44,6 +50,11 @@ export default function ViewCharacter() {
               label="Species"
               name="species"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -53,6 +64,11 @@ export default function ViewCharacter() {
               label="Gender"
               name="gender"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -62,6 +78,11 @@ export default function ViewCharacter() {
               label="Age"
               name="age"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -71,6 +92,11 @@ export default function ViewCharacter() {
               label="Personality"
               name="personality"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -80,6 +106,11 @@ export default function ViewCharacter() {
               label="Favorite Hobby"
               name="hobby"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             
             <Button
@@ -87,6 +118,7 @@ export default function ViewCharacter() {
               fullWidth
               variant="contained"
               sx={{ mt: 2, mb: 2 }}
+              style={{ borderRadius: '25px' }}
             >
               Create Scene
             </Button>
@@ -96,6 +128,8 @@ export default function ViewCharacter() {
               fullWidth
               variant="contained"
               sx={{ mt: 1, mb: 2 }}
+              style={{ borderRadius: '25px' }}
+
             >
               View Scenes
             </Button>
@@ -105,6 +139,7 @@ export default function ViewCharacter() {
               fullWidth
               variant="contained"
               sx={{ mt: 1, mb: 2 }}
+              style={{ borderRadius: '25px' }}
             >
               Edit
             </Button>
@@ -115,6 +150,7 @@ export default function ViewCharacter() {
               variant="contained"
               sx={{ mt: 1, mb: 2 }}
               color="error"
+              style={{ borderRadius: '25px' }}
             >
               Delete
             </Button>

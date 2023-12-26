@@ -36,6 +36,11 @@ export default function CreateCharacter() {
               label="Name"
               name="name"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -45,6 +50,11 @@ export default function CreateCharacter() {
               label="Species"
               name="species"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -54,6 +64,11 @@ export default function CreateCharacter() {
               label="Gender"
               name="gender"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -63,6 +78,11 @@ export default function CreateCharacter() {
               label="Age"
               name="age"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -72,6 +92,11 @@ export default function CreateCharacter() {
               label="Personality"
               name="personality"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             <TextField
               margin="normal"
@@ -81,6 +106,11 @@ export default function CreateCharacter() {
               label="Favorite Hobby"
               name="hobby"
               autoFocus
+              InputProps={{
+                style: {
+                  borderRadius: '25px',
+                }
+            }}
             />
             
             <Button
@@ -88,6 +118,7 @@ export default function CreateCharacter() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              style={{ borderRadius: '25px' }}
             >
               Create Character
             </Button>
