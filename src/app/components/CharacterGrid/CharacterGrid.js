@@ -18,7 +18,6 @@ export default function CharacterGrid() {
         setCharacters(response.data);
       } catch (error) {
         console.error("An error occurred:", error);
-        // Handle the error appropriately
       }
     };
 

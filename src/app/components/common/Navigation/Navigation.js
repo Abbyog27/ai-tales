@@ -18,6 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, secondaryListItems } from './listItems';
 import CharacterGrid from '../../CharacterGrid/CharacterGrid';
+import SceneGenerator from '../../SceneGenerator/SceneGenerator';
 
 
 function Copyright(props) {
@@ -158,7 +159,8 @@ export default function Navigation() {
             <Grid container spacing={3}>
 
               <Grid item xs={12}>
-                <CharacterGrid />
+                {/* <CharacterGrid /> */}
+                <SceneGenerator />
               </Grid>
               {/* Chart */}
 {/*               <Grid item xs={12} md={8} lg={9}>
