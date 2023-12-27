@@ -77,7 +77,7 @@ export default function SignUp() {
 			});
   };
 
-  if (redirect) { router.push('/'); }
+  if (redirect) { router.push('/characters/new'); }
 
   return (
     <ThemeProvider theme={defaultTheme}>

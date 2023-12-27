@@ -1,3 +1,4 @@
+"use client";
 import { ButtonGroup } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';

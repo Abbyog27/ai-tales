@@ -1,3 +1,4 @@
+"use client";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
@@ -18,7 +19,6 @@ export default function CharacterGrid() {
         setCharacters(response.data);
       } catch (error) {
         console.error("An error occurred:", error);
-        // Handle the error appropriately
       }
     };
 
