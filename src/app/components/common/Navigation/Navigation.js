@@ -21,6 +21,7 @@ import { mainListItems, secondaryListItems } from './listItems';
 import CharacterGrid from '../../CharacterGrid/CharacterGrid';
 import SceneGenerator from '../../SceneGenerator/SceneGenerator';
 import SingleScene from '../../SingleScene/SingleScene';
+import EditCharacter from '../../EditCharacter';
 
 
 function Copyright(props) {
@@ -164,6 +165,7 @@ export default function Navigation() {
                 <CharacterGrid />
                 {/* <SceneGenerator /> */}
                 {/* <SingleScene /> */}
+               {/*  <EditCharacter /> */}
               </Grid>
               {/* Chart */}
               {/*               <Grid item xs={12} md={8} lg={9}>

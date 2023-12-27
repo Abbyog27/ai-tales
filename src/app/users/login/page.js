@@ -1,10 +1,10 @@
 "use client";
-import 'bootstrap/dist/css/bootstrap.css';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import setAuthToken from '@/app/utils/setAuthToken';
+import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.css';
 import jwtDecode from 'jwt-decode';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Login() {
     const router = useRouter();
@@ -28,7 +28,7 @@ export default function Login() {
 
 		axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/login`, { email, password })
 			.then(response => {
-				
+
                 localStorage.setItem('jwtToken', response.data.token);
                 localStorage.setItem('email', response.data.userData.email);
                 localStorage.setItem('expiration', response.data.userData.exp);

@@ -21,7 +21,7 @@ const Signup = () => {
 	const [zipCode, setZipCode] = useState('');
 	const [error, setError] = useState(false);
 
-	// create the 
+	// create the
 	const handleFirstName = (e) => {
 		// fill in code
 		setFirstName(e.target.value);
@@ -90,6 +90,7 @@ const Signup = () => {
 		axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/signup`, newUser)
 			.then(response => {
 				setRedirect(true);
+				router.push('/users/login');
 			})
 			.catch(error => {
 				if (error.response.data.message === 'Email already exists') {
