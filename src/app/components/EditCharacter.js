@@ -6,14 +6,18 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
+
 
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
-export default function EditCharacter() {
-  
+export default function EditCharacter({ characterInfo }) {
+  if (!characterInfo) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -27,6 +31,11 @@ export default function EditCharacter() {
             alignItems: 'center',
           }}
         >
+          <Avatar
+            src={characterInfo.avatar}
+            alt={characterInfo.name}
+            sx={{ width: 100, height: 100, mb: 2 }}
+          />
           <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
@@ -36,11 +45,13 @@ export default function EditCharacter() {
               label="Name"
               name="name"
               autoFocus
+              disabled
+              value={characterInfo.name}
               InputProps={{
                 style: {
                   borderRadius: '25px',
                 }
-            }}
+              }}
             />
             <TextField
               margin="normal"
@@ -50,11 +61,13 @@ export default function EditCharacter() {
               label="Species"
               name="species"
               autoFocus
+              disabled
+              value={characterInfo.species}
               InputProps={{
                 style: {
                   borderRadius: '25px',
                 }
-            }}
+              }}
             />
             <TextField
               margin="normal"
@@ -64,11 +77,13 @@ export default function EditCharacter() {
               label="Gender"
               name="gender"
               autoFocus
+              disabled
+              value={characterInfo.gender}
               InputProps={{
                 style: {
                   borderRadius: '25px',
                 }
-            }}
+              }}
             />
             <TextField
               margin="normal"
@@ -78,11 +93,13 @@ export default function EditCharacter() {
               label="Age"
               name="age"
               autoFocus
+              disabled
+              value={characterInfo.age}
               InputProps={{
                 style: {
                   borderRadius: '25px',
                 }
-            }}
+              }}
             />
             <TextField
               margin="normal"
@@ -92,11 +109,13 @@ export default function EditCharacter() {
               label="Personality"
               name="personality"
               autoFocus
+              disabled
+              value={characterInfo.personality}
               InputProps={{
                 style: {
                   borderRadius: '25px',
                 }
-            }}
+              }}
             />
             <TextField
               margin="normal"
@@ -106,18 +125,20 @@ export default function EditCharacter() {
               label="Favorite Hobby"
               name="hobby"
               autoFocus
+              disabled
+              value={characterInfo.favoriteHobby}
               InputProps={{
                 style: {
                   borderRadius: '25px',
                 }
-            }}
+              }}
             />
-            
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 1 }}
               style={{ borderRadius: '25px' }}
             >
               Edit Character
@@ -127,18 +148,17 @@ export default function EditCharacter() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 1, mb: 2 }}
               color="error"
               style={{ borderRadius: '25px' }}
             >
               Cancel
             </Button>
-            
+
           </Box>
         </Box>
-    
+
       </Container>
     </ThemeProvider>
   );
-        }
-      
+}
