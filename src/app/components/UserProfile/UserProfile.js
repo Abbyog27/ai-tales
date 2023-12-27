@@ -1,5 +1,6 @@
-import { Box, Button, Container, Paper, TextField, Typography, Alert } from '@mui/material';
+import { Alert, Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper, TextField, Typography } from '@mui/material';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function UserProfile() {
@@ -9,11 +10,13 @@ export default function UserProfile() {
   const [initialUsername, setInitialUsername] = useState("");
   const [initialEmail, setInitialEmail] = useState("");
   const [error, setError] = useState("");
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/658b7658079dfcab5d2bab65`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/658b8111d6a37abbb752b5f1`);
         const fetchedUsername = response.data.username;
         const fetchedEmail = response.data.email;
         setUsername(fetchedUsername);
@@ -52,12 +55,12 @@ export default function UserProfile() {
 
     const userData = { username, email };
     try {
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/edit/658b7658079dfcab5d2bab65`, userData);
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/edit/658b8111d6a37abbb752b5f1`, userData);
       console.log('Response:', response.data);
       setInitialUsername(username);
       setInitialEmail(email);
       setEditable(false);
-      setError(""); // Reset error message on successful update
+      setError("");
     } catch (error) {
       if (error.response) {
         if (error.response.status === 400) {
@@ -69,6 +72,25 @@ export default function UserProfile() {
         setError("Network error or server is down.");
       }
     }
+  };
+
+  const handleDeleteClick = () => {
+    setOpenDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/delete/658b8111d6a37abbb752b5f1`);
+      console.log('Account deleted');
+      router.push('/signup');
+    } catch (error) {
+      console.error('Error deleting account:', error);
+    }
+    setOpenDeleteDialog(false);
+  };
+
+  const handleCancelDelete = () => {
+    setOpenDeleteDialog(false);
   };
 
   return (
@@ -119,11 +141,31 @@ export default function UserProfile() {
           ) : (
             <>
               <Button variant="contained" color="primary" onClick={handleEditClick}>Edit</Button>
-              <Button variant="contained" color="error">Delete</Button>
+              <Button variant="contained" color="error" onClick={handleDeleteClick}>Delete</Button>
             </>
           )}
         </Box>
       </Paper>
+
+      <Dialog
+          open={openDeleteDialog}
+          onClose={handleCancelDelete}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title" style={{ textAlign: 'center' }}>
+            Delete Account
+          </DialogTitle>
+          <DialogContent style={{ textAlign: 'center' }}>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete your account?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions style={{ justifyContent: 'center' }}>
+            <Button onClick={handleConfirmDelete} color="error" variant="contained">Delete Account</Button>
+            <Button onClick={handleCancelDelete} color="warning" variant="contained">Cancel Deletion</Button>
+          </DialogActions>
+        </Dialog>
     </Container>
   );
 }
