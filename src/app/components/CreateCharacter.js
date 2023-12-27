@@ -1,24 +1,26 @@
-import * as React from 'react';
+import { CircularProgress, Paper } from '@mui/material';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { Paper } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import * as React from 'react';
 
 const defaultTheme = createTheme();
 
 export default function CreateCharacter() {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    setIsSubmitting(true);
 
+    const data = new FormData(event.currentTarget);
     const character = {
       user: "507f1f77bcf86cd799439011",
       name: data.get('name'),
@@ -35,9 +37,10 @@ export default function CreateCharacter() {
       router.push('/');
     } catch (error) {
       console.error('Error creating character:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container maxWidth="xl">
@@ -149,9 +152,17 @@ export default function CreateCharacter() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={isSubmitting}
                 style={{ borderRadius: '25px' }}
               >
-                Create Character
+                {isSubmitting ? (
+                  <>
+                    Generating Character...
+                    <CircularProgress size={24} style={{ marginLeft: '10px' }} />
+                  </>
+                ) : (
+                  "Create Character"
+                )}
               </Button>
             </Box>
           </Box>
