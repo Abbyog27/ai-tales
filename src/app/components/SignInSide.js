@@ -1,8 +1,11 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import setAuthToken from '@/app/utils/setAuthToken';
+import jwtDecode from 'jwt-decode';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
@@ -11,6 +14,7 @@ import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { useRouter } from 'next/navigation';
 
 function Copyright(props) {
   return (
@@ -30,17 +34,46 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState(false);
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/login`, {
+        email,
+        password,
+      });
+
+      if (response.status === 302) {
+        // Redirect to the URL specified in the "Location" header
+        window.location.href = response.headers.location;
+      } else {
+        // Handle the successful login case
+        localStorage.setItem('jwtToken', response.data.token);
+        setAuthToken(response.data.token);
+        const decoded = jwtDecode(response.data.token);
+        router.push('/users/profile');
+        // Redirect to the profile page or do something else upon successful login
+      }
+    } catch (err) {
+      setError(true);
+    }
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={createTheme()}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
@@ -83,6 +116,8 @@ export default function SignInSide() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={handleEmailChange}
               />
               <TextField
                 margin="normal"
@@ -93,6 +128,8 @@ export default function SignInSide() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={handlePasswordChange}
               />
               <Button
                 type="submit"
@@ -114,8 +151,8 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
+            {error && <p>Error message here</p>}
           </Box>
         </Grid>
       </Grid>
