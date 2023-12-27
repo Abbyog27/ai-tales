@@ -1,23 +1,64 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
-
-
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import Container from '@mui/material/Container';
+import CircularProgress from '@mui/material/CircularProgress';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import axios from 'axios';
 
 const defaultTheme = createTheme();
 
 export default function EditCharacter({ characterInfo }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [apiStatus, setApiStatus] = useState('idle'); // 'idle', 'inProgress', 'success'
+  const [formData, setFormData] = useState({ ...characterInfo });
+
   if (!characterInfo) {
     return <div>Loading...</div>;
   }
+
+  const excludedFields = ['_id', 'user', 'createdAt', 'updatedAt', '__v', 'avatar'];
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setFormData({ ...characterInfo }); // Reset formData to initial values
+  };
+
+  const handleConfirmEdit = async () => {
+    setIsEditing(false); // Disable editing mode immediately
+    setApiStatus('inProgress');
+    try {
+      await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/characters/edit/${characterInfo._id}`, formData);
+      setApiStatus('success');
+      setTimeout(() => {
+        setApiStatus('idle');
+      }, 1500);
+    } catch (error) {
+      console.error("Error updating character:", error);
+      setIsEditing(true); // Re-enable editing if there's an error
+      setApiStatus('idle');
+    }
+  };
+
+
+  const handleDeleteCharacter = () => {
+    // Implement delete functionality
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value
+    }));
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -37,127 +78,49 @@ export default function EditCharacter({ characterInfo }) {
             sx={{ width: 100, height: 100, mb: 2 }}
           />
           <Box component="form" noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="name"
-              label="Name"
-              name="name"
-              autoFocus
-              disabled
-              value={characterInfo.name}
-              InputProps={{
-                style: {
-                  borderRadius: '25px',
-                }
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="species"
-              label="Species"
-              name="species"
-              autoFocus
-              disabled
-              value={characterInfo.species}
-              InputProps={{
-                style: {
-                  borderRadius: '25px',
-                }
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="gender"
-              label="Gender"
-              name="gender"
-              autoFocus
-              disabled
-              value={characterInfo.gender}
-              InputProps={{
-                style: {
-                  borderRadius: '25px',
-                }
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="age"
-              label="Age"
-              name="age"
-              autoFocus
-              disabled
-              value={characterInfo.age}
-              InputProps={{
-                style: {
-                  borderRadius: '25px',
-                }
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="personality"
-              label="Personality"
-              name="personality"
-              autoFocus
-              disabled
-              value={characterInfo.personality}
-              InputProps={{
-                style: {
-                  borderRadius: '25px',
-                }
-              }}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="hobby"
-              label="Favorite Hobby"
-              name="hobby"
-              autoFocus
-              disabled
-              value={characterInfo.favoriteHobby}
-              InputProps={{
-                style: {
-                  borderRadius: '25px',
-                }
-              }}
-            />
+            {Object.keys(formData).filter(key => !excludedFields.includes(key)).map((key) => (
+              <TextField
+                key={key}
+                margin="normal"
+                required
+                fullWidth
+                id={key}
+                label={key.charAt(0).toUpperCase() + key.slice(1)}
+                name={key}
+                autoFocus
+                disabled={!isEditing}
+                value={formData[key]}
+                onChange={handleChange}
+                InputProps={{
+                  style: {
+                    borderRadius: '25px',
+                  }
+                }}
+              />
+            ))}
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 1 }}
-              style={{ borderRadius: '25px' }}
-            >
-              Edit Character
-            </Button>
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 1, mb: 2 }}
-              color="error"
-              style={{ borderRadius: '25px' }}
-            >
-              Cancel
-            </Button>
-
+            {!isEditing ? (
+              <>
+                <Button onClick={handleEdit} fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
+                  Edit Character
+                </Button>
+                <Button onClick={handleDeleteCharacter} fullWidth variant="contained" color="error" sx={{ mt: 1, mb: 2 }}>
+                  Delete Character
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button onClick={handleConfirmEdit} fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}
+                  disabled={apiStatus === 'inProgress'}>
+                  {apiStatus === 'inProgress' ? <CircularProgress size={24} /> : 'Confirm Edit'}
+                </Button>
+                <Button onClick={handleCancelEdit} fullWidth variant="contained" color="error" sx={{ mt: 1, mb: 2 }}>
+                  Cancel Edit
+                </Button>
+              </>
+            )}
           </Box>
         </Box>
-
       </Container>
     </ThemeProvider>
   );
