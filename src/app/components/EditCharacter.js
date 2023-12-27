@@ -7,14 +7,24 @@ import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import CircularProgress from '@mui/material/CircularProgress';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+
 
 const defaultTheme = createTheme();
 
 export default function EditCharacter({ characterInfo }) {
+  const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
-  const [apiStatus, setApiStatus] = useState('idle'); // 'idle', 'inProgress', 'success'
+  const [apiStatus, setApiStatus] = useState('idle');
   const [formData, setFormData] = useState({ ...characterInfo });
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+
 
   if (!characterInfo) {
     return <div>Loading...</div>;
@@ -42,14 +52,24 @@ export default function EditCharacter({ characterInfo }) {
       }, 1500);
     } catch (error) {
       console.error("Error updating character:", error);
-      setIsEditing(true); // Re-enable editing if there's an error
+      setIsEditing(true);
       setApiStatus('idle');
     }
   };
 
-
   const handleDeleteCharacter = () => {
-    // Implement delete functionality
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/characters/delete/${characterInfo._id}`);
+      setDeleteConfirmOpen(false);
+      window.location.href = '/';
+
+    } catch (error) {
+      console.error("Error deleting character:", error);
+    }
   };
 
   const handleChange = (event) => {
@@ -121,6 +141,36 @@ export default function EditCharacter({ characterInfo }) {
             )}
           </Box>
         </Box>
+        <Dialog
+          open={deleteConfirmOpen}
+          onClose={() => setDeleteConfirmOpen(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Delete Character"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure you want to delete your character? Deleting a character will also delete stories associated with it.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setDeleteConfirmOpen(false)}
+              variant="contained"
+              color="primary"
+              sx={{ mr: 2 }}
+            >
+              Cancel Deletion
+            </Button>
+            <Button
+              onClick={handleDelete}
+              variant="contained"
+              color="error"
+            >
+              Confirm Deletion
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Container>
     </ThemeProvider>
   );
