@@ -2,6 +2,7 @@ import { Alert, Box, Button, Container, Dialog, DialogActions, DialogContent, Di
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import jwtDecode from 'jwt-decode';
 
 export default function UserProfile() {
   const [isEditable, setEditable] = useState(false);
@@ -15,8 +16,19 @@ export default function UserProfile() {
 
   useEffect(() => {
     const fetchUserData = async () => {
+
+      const token = localStorage.getItem('jwtToken');
+      if (!token) {
+        console.error("No token found");
+        router.push('/login');
+        return;
+      }
+
+      const decoded = jwtDecode(token);
+      const userId = decoded.id;
+
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/658b8111d6a37abbb752b5f1`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/${userId}`);
         const fetchedUsername = response.data.username;
         const fetchedEmail = response.data.email;
         setUsername(fetchedUsername);
@@ -53,9 +65,13 @@ export default function UserProfile() {
       return;
     }
 
+    const token = localStorage.getItem('jwtToken');
+    const decoded = jwtDecode(token);
+    const userId = decoded.id;
+
     const userData = { username, email };
     try {
-      const response = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/edit/658b8111d6a37abbb752b5f1`, userData);
+      const response = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/edit/${userId}`, userData);
       console.log('Response:', response.data);
       setInitialUsername(username);
       setInitialEmail(email);
@@ -79,9 +95,14 @@ export default function UserProfile() {
   };
 
   const handleConfirmDelete = async () => {
+    const token = localStorage.getItem('jwtToken');
+    const decoded = jwtDecode(token);
+    const userId = decoded.id;
+
     try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/delete/658b8111d6a37abbb752b5f1`);
+      await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/delete/${userId}`);
       console.log('Account deleted');
+      localStorage.removeItem('jwtToken');
       router.push('/signup');
     } catch (error) {
       console.error('Error deleting account:', error);

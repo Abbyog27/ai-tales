@@ -1,29 +1,43 @@
-"use client";
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Pagination from '@mui/material/Pagination';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import CharacterCard from '../CharacterCard/CharacterCard';
+import jwtDecode from 'jwt-decode';
+import { useRouter } from 'next/navigation';
 
 const ITEMS_PER_PAGE = 6;
 
 export default function CharacterGrid() {
   const [characters, setCharacters] = useState([]);
   const [page, setPage] = useState(1);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCharacters = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/characters/collection/507f1f77bcf86cd799439011`);
-        setCharacters(response.data);
+        const token = localStorage.getItem('jwtToken');
+        if (token) {
+          const decoded = jwtDecode(token);
+          const userId = decoded.id;
+
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/characters/collection/${userId}`);
+          setCharacters(response.data);
+
+          if (response.data.length === 0) {
+            router.push('/characters/new');
+          }
+        } else {
+          console.error("No token found");
+        }
       } catch (error) {
         console.error("An error occurred:", error);
       }
     };
 
     fetchCharacters();
-  }, []); // Empty dependency array means this effect runs once on component mount
+  }, [router]);
 
   const pageCount = Math.ceil(characters.length / ITEMS_PER_PAGE);
 

@@ -9,6 +9,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
+import jwtDecode from 'jwt-decode';
 
 const defaultTheme = createTheme();
 
@@ -20,9 +21,19 @@ export default function CreateCharacter() {
     event.preventDefault();
     setIsSubmitting(true);
 
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      console.error("No token found");
+      // Handle the case when there is no token, e.g., redirect to login
+      return;
+    }
+
+    const decoded = jwtDecode(token);
+    const userId = decoded.id;
+
     const data = new FormData(event.currentTarget);
     const character = {
-      user: "507f1f77bcf86cd799439011",
+      user: userId,
       name: data.get('name'),
       species: data.get('species'),
       gender: data.get('gender'),

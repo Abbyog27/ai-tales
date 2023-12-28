@@ -1,4 +1,3 @@
-"use client";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Card from '@mui/material/Card';
@@ -7,6 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { useParams } from 'next/navigation';
+import Box from '@mui/material/Box'; // Import Box
 
 export default function SingleScene() {
   const { sceneId } = useParams();
@@ -18,7 +18,6 @@ export default function SingleScene() {
     const fetchScene = async () => {
       try {
         const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/scenes/${sceneId}`);
-        console.log('DEBUGGING', response);
         setScenes(response.data);
         setLoading(false);
       } catch (error) {
@@ -33,29 +32,31 @@ export default function SingleScene() {
   if (!scene) return <p>No scene data found</p>;
 
   return (
-    <Card sx={{ maxWidth: 650 }}>
-      <CardMedia
-        component="img"
-        alt="Scene Image"
-        height="auto"
-        image={scene.sceneImageUrl}
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {scene.sceneCaption}
-        </Typography>
-        <Stack direction="row" spacing={4} justifyContent='space-around'>
-          <Typography gutterBottom variant="overline" component="div">
-            {scene.likes} Likes
+    <Box display="flex" justifyContent="center" alignItems="center" height="100%"> {/* Centering styles */}
+      <Card sx={{ maxWidth: 650 }}>
+        <CardMedia
+          component="img"
+          alt="Scene Image"
+          height="auto"
+          image={scene.sceneImageUrl}
+        />
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {scene.sceneCaption}
           </Typography>
-          <Typography gutterBottom variant="overline" component="div">
-            {scene.comments} Comments
-          </Typography>
-          <Typography gutterBottom variant="overline" component="div">
-            {scene.views} Views
-          </Typography>
-        </Stack>
-      </CardContent>
-    </Card>
+          <Stack direction="row" spacing={4} justifyContent='space-around'>
+            <Typography gutterBottom variant="overline" component="div">
+              {scene.likes} Likes
+            </Typography>
+            <Typography gutterBottom variant="overline" component="div">
+              {scene.comments} Comments
+            </Typography>
+            <Typography gutterBottom variant="overline" component="div">
+              {scene.views} Views
+            </Typography>
+          </Stack>
+        </CardContent>
+      </Card>
+    </Box>
   );
 }
