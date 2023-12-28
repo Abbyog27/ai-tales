@@ -19,6 +19,8 @@ import { mainListItems } from './listItems';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import CircularProgress from '@mui/material/CircularProgress';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 
 
 function Copyright(props) {
@@ -103,6 +105,13 @@ export default function Navigation({ children }) {
     setOpen(!open);
   };
 
+  const handleLogout = () => {
+    // Clear authentication token, perform any cleanup or redirect as needed
+    localStorage.removeItem('jwtToken');
+    router.push('/login');
+  };
+
+
   if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
@@ -161,6 +170,25 @@ export default function Navigation({ children }) {
           <List component="nav">
             {mainListItems}
             <Divider sx={{ my: 1 }} />
+            <List component="nav">
+              {mainListItems}
+              <Divider sx={{ my: 1 }} />
+              <ListItem
+                button
+                onClick={handleLogout}
+                sx={{
+                  '&:hover': {
+                    backgroundColor: 'error.light',
+                  }
+                }}
+              >
+                <ListItemIcon>
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItem>
+            </List>
+
           </List>
         </Drawer>
         <Box
