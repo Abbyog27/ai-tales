@@ -170,53 +170,48 @@ export default function Navigation({ children }) {
           <List component="nav">
             {mainListItems}
             <Divider sx={{ my: 1 }} />
-            <List component="nav">
-              {mainListItems}
-              <Divider sx={{ my: 1 }} />
-              <ListItem
-                button
-                onClick={handleLogout}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: 'error.light',
-                  }
-                }}
-              >
-                <ListItemIcon>
-                  <ExitToAppIcon />
-                </ListItemIcon>
-                <ListItemText primary="Logout" />
-              </ListItem>
-            </List>
-
+            <ListItem
+              button
+              onClick={handleLogout}
+              sx={{
+                '&:hover': {
+                  backgroundColor: 'error.light',
+                }
+              }}
+            >
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItem>
           </List>
-        </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3} justifyContent="center" alignItems="center">
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'light'
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+          flexGrow: 1,
+          height: '100vh',
+          overflow: 'auto',
+        }}
+      >
+        <Toolbar />
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Grid container spacing={3} justifyContent="center" alignItems="center">
 
-              <Grid item xs={12} sm={8} lg={12}>
-                {children}
-              </Grid>
-              <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Copyright sx={{ pt: 4 }} />
-              </Grid>
+            <Grid item xs={12} sm={8} lg={12}>
+              {children}
             </Grid>
-          </Container>
-        </Box>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Copyright sx={{ pt: 4 }} />
+            </Grid>
+          </Grid>
+        </Container>
       </Box>
-    </ThemeProvider>
+    </Box>
+    </ThemeProvider >
   );
 }
