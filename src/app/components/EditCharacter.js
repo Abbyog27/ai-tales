@@ -35,8 +35,11 @@ export default function EditCharacter({ characterInfo }) {
   const handleEdit = () => {
     setIsEditing(true);
   };
-  const handleViewScenes = () => {
-    setIsEditing(true);
+  const handleViewScenes = async () => {
+
+    // setIsViewing(true);
+    // axios.get(`/scenes/character/${characterInfo._id}`);
+    router.push(`/scenes/character/${characterInfo._id}`);
   };
 
   const handleCancelEdit = () => {
@@ -55,6 +58,7 @@ export default function EditCharacter({ characterInfo }) {
       }, 1500);
     } catch (error) {
       console.error("Error updating character:", error);
+      // setIsViewing(true);
       setIsEditing(true);
       setApiStatus('idle');
     }
