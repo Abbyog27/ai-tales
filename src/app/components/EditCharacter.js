@@ -35,6 +35,9 @@ export default function EditCharacter({ characterInfo }) {
   const handleEdit = () => {
     setIsEditing(true);
   };
+  const handleViewScenes = () => {
+    setIsEditing(true);
+  };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
@@ -121,8 +124,11 @@ export default function EditCharacter({ characterInfo }) {
 
             {!isEditing ? (
               <>
-                <Button onClick={handleEdit} fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
+                <Button onClick={handleEdit} fullWidth variant="contained" sx={{ mt: 1, mb: 1 }}>
                   Edit Character
+                </Button>
+                <Button onClick={handleViewScenes} fullWidth variant="contained" sx={{ mt: 1, mb: 1 }}>
+                  View Scenes
                 </Button>
                 <Button onClick={handleDeleteCharacter} fullWidth variant="contained" color="error" sx={{ mt: 1, mb: 2 }}>
                   Delete Character
