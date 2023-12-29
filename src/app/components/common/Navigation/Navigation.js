@@ -10,18 +10,17 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { mainListItems, secondaryListItems } from './listItems';
-import CharacterGrid from '../../CharacterGrid/CharacterGrid';
-import SceneGenerator from '../../SceneGenerator/SceneGenerator';
-import SingleScene from '../../SingleScene/SingleScene';
-import EditCharacter from '../../EditCharacter';
+import { mainListItems } from './listItems';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import CircularProgress from '@mui/material/CircularProgress';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 
 
 function Copyright(props) {
@@ -86,11 +85,40 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function Navigation() {
+export default function Navigation({ children }) {
   const [open, setOpen] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      router.push('/login');
+    } else {
+      setIsLoading(false); // Set loading to false when token is found
+    }
+  }, [router]);
+
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const handleLogout = () => {
+    // Clear authentication token, perform any cleanup or redirect as needed
+    localStorage.removeItem('jwtToken');
+    router.push('/login');
+  };
+
+
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -99,7 +127,7 @@ export default function Navigation() {
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
-              pr: '24px', // keep right padding when drawer closed
+              pr: '24px',
             }}
           >
             <IconButton
@@ -142,70 +170,48 @@ export default function Navigation() {
           <List component="nav">
             {mainListItems}
             <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
+            <ListItem
+              button
+              onClick={handleLogout}
+              sx={{
+                '&:hover': {
+                  backgroundColor: 'error.light',
+                }
+              }}
+            >
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItem>
           </List>
-        </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3} justifyContent="center" alignItems="center">
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'light'
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+          flexGrow: 1,
+          height: '100vh',
+          overflow: 'auto',
+        }}
+      >
+        <Toolbar />
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Grid container spacing={3} justifyContent="center" alignItems="center">
 
-              <Grid item xs={12} sm={8} lg={12}>
-                <CharacterGrid />
-                {/* <SceneGenerator /> */}
-                {/* <SingleScene /> */}
-               {/*  <EditCharacter /> */}
-              </Grid>
-              {/* Chart */}
-              {/*               <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Chart />
-                </Paper>
-              </Grid> */}
-              {/* Recent Deposits */}
-              {/*               <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: 240,
-                  }}
-                >
-                  <Deposits />
-                </Paper>
-              </Grid> */}
-              {/* Recent Orders */}
-              {/*               <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                  <Orders />
-                </Paper>
-              </Grid> */}
-              <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Copyright sx={{ pt: 4 }} />
-              </Grid>
+            <Grid item xs={12} sm={8} lg={12}>
+              {children}
             </Grid>
-          </Container>
-        </Box>
+            <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Copyright sx={{ pt: 4 }} />
+            </Grid>
+          </Grid>
+        </Container>
       </Box>
-    </ThemeProvider>
+    </Box>
+    </ThemeProvider >
   );
 }

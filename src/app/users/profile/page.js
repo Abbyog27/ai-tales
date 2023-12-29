@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
-import ProfileNav from '@/app/components/common/ProfileNav/ProfileNav';
+import Navigation from '@/app/components/common/Navigation/Navigation';
+import UserProfile from '@/app/components/UserProfile/UserProfile';
 
 // we are going to be fetching data from our API and displaying it on
 // the page
@@ -28,7 +29,9 @@ export default function Home() {
 
   return (
     <main>
-      <ProfileNav />
+      <Navigation>
+        <UserProfile />
+      </Navigation>
     </main>
   );
 }
