@@ -6,6 +6,7 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useParams } from 'next/navigation';
+import Navigation from '@/app/components/common/Navigation/Navigation';
 import ScenesFeed from '@/app/components/ScenesFeed/ScenesFeed';
 
 export default function CharacterScenesPage() {
@@ -31,8 +32,10 @@ export default function CharacterScenesPage() {
 
     return (
         <div>
+          <Navigation>
             <h1>Scenes for Character {characterId}</h1>
             <ScenesFeed characterId={characterId} />
+          </Navigation>
         </div>
     );
 }
