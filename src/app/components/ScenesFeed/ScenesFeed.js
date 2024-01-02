@@ -18,17 +18,8 @@ export default function ScenesFeed() {
         const fetchScenes = async () => {
           try {
             const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/scenes/character/${characterId}`);
-            console.log('DEBUGGING', response);
-            
+            console.log('DEBUGGING', response);            
             setScenes(response.data);
-            // if (response.data.character && response.data.character.length > 0) {
-            //   setScenes({ ...response.data, characterName: response.data.character[0].name });
-            //   console.log("Testing scene fetch", scene)
-            // } else {
-            //   setScenes({ ...response.data, characterName: 'Unknown' });
-            //   console.log("Testing scene fetch", scene)
-            // }
-            
             setLoading(false);
           } catch (error) {
             console.log("An error occurred:", error);

@@ -33,7 +33,6 @@ export default function CharacterScenesPage() {
     return (
         <div>
           <Navigation>
-            <h1>Scenes for Character {characterId}</h1>
             <ScenesFeed characterId={characterId} />
           </Navigation>
         </div>
