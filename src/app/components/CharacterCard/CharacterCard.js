@@ -53,7 +53,6 @@ export default function CharacterCard({ character }) {
         <CardMedia
           component="div"
           sx={{
-            // 16:9
             pt: '100%',
           }}
           image={character.avatar}

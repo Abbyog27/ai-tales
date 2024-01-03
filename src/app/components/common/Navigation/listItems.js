@@ -2,8 +2,6 @@ import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import { AccountCircle } from '@mui/icons-material';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import { AutoStories } from '@mui/icons-material';

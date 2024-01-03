@@ -28,7 +28,6 @@ export default function AllScenesCard ({ scene }) {
         <Button size="small" color="primary">
           Like
         </Button>
-        {/* Add more actions as needed */}
       </CardActions>
     </Card>
   );

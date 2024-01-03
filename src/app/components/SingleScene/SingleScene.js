@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import { useParams } from 'next/navigation';
-import Box from '@mui/material/Box'; // Import Box
+import Box from '@mui/material/Box'; 
 
 export default function SingleScene() {
   const { sceneId } = useParams();
@@ -32,7 +32,7 @@ export default function SingleScene() {
   if (!scene) return <p>No scene data found</p>;
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" height="100%"> {/* Centering styles */}
+    <Box display="flex" justifyContent="center" alignItems="center" height="100%"> 
       <Card sx={{ maxWidth: 650 }}>
         <CardMedia
           component="img"
