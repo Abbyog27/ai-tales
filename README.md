@@ -1,7 +1,7 @@
 # `AI Tales`
 Unlock creativity through the power of AI.
 
-![AI Tales](https://github.com/soyrvelez/ai-tales/blob/main/resources/ai-tales.png?sanitize=true)
+![AI Tales](https://github.com/soyrvelez/ai-tales/blob/main/ai-tales.png?sanitize=true)
 
 ## What is it?
 
