@@ -1,38 +1,37 @@
-'use client';
-import 'bulma/css/bulma.min.css';
-import Image from 'next/image';
-import styles from './page.module.css';
-import { useEffect, useState } from 'react';
-import setAuthToken from './utils/setAuthToken';
+"use client";
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Navigation from './components/common/Navigation/Navigation';
-
-// we are going to be fetching data from our API and displaying it on
-// the page
+import CharacterGrid from './components/CharacterGrid/CharacterGrid';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 export default function Home() {
-  // state is what the data is representing in realtime
-  const [data, setData] = useState(null);
-  const [isLoading, setLoading] = useState(false);
-  const [age, setAge] = useState(null);
-  const [name, setName] = useState('Dylan');
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
-  /* useEffect(() => {
-    // hitting an api and setting our component with some data
-    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/`)
-      .then((res) => res.json())
-      .then((data) => {
-        // data is an object
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
+  useEffect(() => {
+    const token = localStorage.getItem('jwtToken');
+    if (!token) {
+      router.push('/login');
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
 
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No data shown...</p>; */
+  if (isLoading) {
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <main>
-      <Navigation />
+      <Navigation>
+        <CharacterGrid />
+      </Navigation>
     </main>
   );
 }

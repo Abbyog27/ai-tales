@@ -1,12 +1,15 @@
 'use client';
-import SceneNav from "@/app/components/common/SceneNav/SceneNav";
+import Navigation from "@/app/components/common/Navigation/Navigation";
+import SingleScene from "@/app/components/SingleScene/SingleScene";
 
 
 export default function Home() {
 
   return (
     <main>
-      <SceneNav />
+      <Navigation>
+        <SingleScene />
+      </Navigation>
     </main>
   );
 }

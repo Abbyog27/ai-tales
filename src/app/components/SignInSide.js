@@ -20,7 +20,7 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="/">
         AI Tales
       </Link>{' '}
       {new Date().getFullYear()}
@@ -37,7 +37,7 @@ export default function SignInSide() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -49,26 +49,30 @@ export default function SignInSide() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/users/login`, { email, password });
 
-      if (response.status === 302) {
-        // Redirect to the URL specified in the "Location" header
-        window.location.href = response.headers.location;
+      const token = response.data.token;
+      localStorage.setItem('jwtToken', token);
+      setAuthToken(token);
+
+      const decoded = jwtDecode(token);
+      const userId = decoded.id;
+
+      const characterResponse = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/characters/collection/${userId}`);
+
+      if (characterResponse.data && characterResponse.data.length > 0) {
+        router.push('/');
       } else {
-        // Handle the successful login case
-        localStorage.setItem('jwtToken', response.data.token);
-        setAuthToken(response.data.token);
-        const decoded = jwtDecode(response.data.token);
-        router.push('/users/profile');
-        // Redirect to the profile page or do something else upon successful login
+        router.push('/characters/new');
       }
     } catch (err) {
-      setError(true);
+      const errorMessage = err.response && err.response.data && err.response.data.error
+        ? err.response.data.error
+        : 'An unknown error occurred';
+
+      console.error('Login Error:', errorMessage);
+      setError(errorMessage);
     }
   };
 
@@ -140,19 +144,14 @@ export default function SignInSide() {
                 Sign In
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
                 <Grid item>
-                  <Link href="#" variant="body2">
+                  <Link href="/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
               </Grid>
             </Box>
-            {error && <p>Error message here</p>}
+            {error && <p>{error}</p>}
           </Box>
         </Grid>
       </Grid>
