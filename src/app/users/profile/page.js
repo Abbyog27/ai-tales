@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Navigation from '@/app/components/common/Navigation/Navigation';
 import UserProfile from '@/app/components/UserProfile/UserProfile';
 
@@ -12,20 +12,6 @@ export default function Home() {
   const [isLoading, setLoading] = useState(false);
   const [age, setAge] = useState(null);
   const [name, setName] = useState('Dylan');
-
-  /* useEffect(() => {
-    // hitting an api and setting our component with some data
-    fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/`)
-      .then((res) => res.json())
-      .then((data) => {
-        // data is an object
-        setData(data);
-        setLoading(false);
-      });
-  }, []);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (!data) return <p>No data shown...</p>; */
 
   return (
     <main>

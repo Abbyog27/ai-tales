@@ -1,6 +1,3 @@
-
-// src/app > scenes > character > [characterId] > pages.js
-
 "use client"
 import React from 'react';
 import { useEffect, useState } from 'react';

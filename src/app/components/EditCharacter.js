@@ -37,18 +37,16 @@ export default function EditCharacter({ characterInfo }) {
   };
   const handleViewScenes = async () => {
 
-    // setIsViewing(true);
-    // axios.get(`/scenes/character/${characterInfo._id}`);
     router.push(`/scenes/character/${characterInfo._id}`);
   };
 
   const handleCancelEdit = () => {
     setIsEditing(false);
-    setFormData({ ...characterInfo }); // Reset formData to initial values
+    setFormData({ ...characterInfo }); 
   };
 
   const handleConfirmEdit = async () => {
-    setIsEditing(false); // Disable editing mode immediately
+    setIsEditing(false);
     setApiStatus('inProgress');
     try {
       await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/characters/edit/${characterInfo._id}`, formData);
@@ -58,7 +56,6 @@ export default function EditCharacter({ characterInfo }) {
       }, 1500);
     } catch (error) {
       console.error("Error updating character:", error);
-      // setIsViewing(true);
       setIsEditing(true);
       setApiStatus('idle');
     }
