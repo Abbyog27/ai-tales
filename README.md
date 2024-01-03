@@ -72,7 +72,7 @@ AI Tales allows users to:
 ### Pages
 
 #### Login
-![Login Page](https://github.com/soyrvelez/ai-tails/blob/main/resources/login.png?sanitize=true)
+![Login Page](https://github.com/soyrvelez/ai-tales/blob/main/resources/login.png?sanitize=true)
 
 The app's user journey begins in a login page where returning users can login or for new users to head to our signup.
 
