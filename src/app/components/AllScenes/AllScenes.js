@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Grid from '@mui/material/Grid';
-import AllScenesCard from '../AllScenesCard/AllScenesCard'; // Ensure this is the path to your CardComponent
+import SceneCard from '../SceneCard/SceneCard'; 
 import jwtDecode from 'jwt-decode';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { Container } from '@mui/material';
+import Stack from '@mui/material/Stack';
 
 export default function AllScenes() {
     // const { userId } = useParams();
@@ -47,16 +49,13 @@ export default function AllScenes() {
     // }
 
     return (
-        <Grid container spacing={2}>
-            {scenes.map((scene) => (
-                <Grid item key={scene._id} xs={12} sm={6} md={4}>
-                    <AllScenesCard
-                        key={scene._id}
-                        scene={scene}
-                    />
-                </Grid>
+        <Container maxWidth="sm"> 
+        <Stack spacing={2}>
+            {scenes.map(scene => (
+                <SceneCard key={scene._id} scene={scene} />
             ))}
-        </Grid>
+        </Stack>
+      </Container>
     );
 }
 
