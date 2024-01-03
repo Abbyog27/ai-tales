@@ -39,7 +39,7 @@ export default function CreateCharacter() {
       gender: data.get('gender'),
       age: data.get('age'),
       personality: data.get('personality'),
-      hobby: data.get('hobby')
+      favoriteHobby: data.get('hobby')
     };
 
     try {
