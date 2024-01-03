@@ -1,7 +1,7 @@
 # `AI Tales`
 Unlock creativity through the power of AI.
 
-![AI Tales](https://github.com/soyrvelez/lol-champ-recommender/blob/main/resources/lolrecommender.png?sanitize=true)
+![AI Tales](https://github.com/soyrvelez/ai-tales/blob/main/resources/ai-tales.png?sanitize=true)
 
 ## What is it?
 
@@ -91,7 +91,7 @@ This page displays each user's information, provides them with the tools to edit
 #### Character Gallery
 ![Character Gallery](https://github.com/soyrvelez/ai-tales/blob/main/resources/charactergallery.png?sanitize=true)
 
-This page displays all characters created by the user. 
+This page displays all characters created by the user.
 
 #### Explorer Page
 ![Explorer Page](https://github.com/soyrvelez/ai-tales/blob/main/resources/explorer.png?sanitize=true)
