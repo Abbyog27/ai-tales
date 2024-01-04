@@ -31,7 +31,7 @@ AI Tales allows users to:
 ## Navigating The Project
 ### Data Models
 #### Entity Relationship Diagram
-![ERD](https://github.com/soyrvelez/lol-champ-recommender/blob/main/resources/lol-recommender-erd.png?sanitize=true)
+![ERD](https://github.com/soyrvelez/ai-tales/blob/main/ai-tales-erd.png?sanitize=true)
 
 #### User Model
 - **Description:** This model is used to store user information.
