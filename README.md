@@ -71,7 +71,7 @@ AI Tales allows users to:
 
 ### App Wireframes
 
-Go to this [Figma File](https://github.com/soyrvelez/lol-champ-recommender/blob/main/resources/lol-recommender-erd.png?sanitize=true) to review the app's wireframes.
+Go to this [Figma File](https://www.figma.com/file/zB5e5WUy1jtVk99y6afsFr/project-3?type=design&node-id=0%3A1&mode=design&t=ZYFbK5yr6ZOXj9lo-1) to review the app's wireframes.
 
 ### User Stories
 - As a user I can create an account
